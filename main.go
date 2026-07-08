@@ -2,6 +2,7 @@ package main
 
 import (
 	"backend-test-golang/database"
+	"backend-test-golang/routes"
 	"log"
 	"net/http"
 
@@ -42,6 +43,8 @@ func main() {
 			"message": "pong",
 		})
 	})
+
+	routes.UserRoutes(r)
 
 	// Start server on port 8080 (default)
 	// Server will listen on 0.0.0.0:8080 (localhost:8080 on Windows)
