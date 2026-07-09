@@ -81,6 +81,10 @@ func CreateUser(user *models.User) error {
 		return nil
 	}
 
+	if !helpers.IsValidEmail(user.Email) {
+		return fmt.Errorf("invalid email format")
+	}
+
 	user.Password, _ = helpers.HashPassword(user.Password)
 	user.CreatedAt = time.Now()
 
@@ -99,6 +103,21 @@ func UpdateUser(id primitive.ObjectID, user *models.User) error {
 
 	if database.UserCollection == nil {
 		return nil
+	}
+	existingUser, _ := FindUserByID(id)
+
+	if existingUser == nil {
+		return fmt.Errorf("user not found")
+	}
+
+	if !helpers.IsValidEmail(user.Email) {
+		return fmt.Errorf("invalid email format")
+	}
+
+	if user.Password != "" {
+		user.Password, _ = helpers.HashPassword(user.Password)
+	} else {
+		user.Password = existingUser.Password
 	}
 
 	_, err := database.UserCollection.UpdateOne(ctx, bson.M{"_id": id}, bson.M{"$set": user})

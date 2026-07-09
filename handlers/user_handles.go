@@ -60,6 +60,9 @@ func CreateUser(c *gin.Context) {
 		if err.Error() == "email already exists" {
 			helpers.Error(c, http.StatusConflict, err.Error())
 			return
+		} else if err.Error() == "invalid email format" {
+			helpers.Error(c, http.StatusBadRequest, err.Error())
+			return
 		} else {
 			helpers.Error(c, http.StatusInternalServerError, err.Error())
 			return
@@ -87,6 +90,9 @@ func UpdateUser(c *gin.Context) {
 	if err != nil {
 		if err.Error() == "user not found" {
 			helpers.Error(c, http.StatusNotFound, err.Error())
+			return
+		} else if err.Error() == "invalid email format" {
+			helpers.Error(c, http.StatusBadRequest, err.Error())
 			return
 		} else {
 			helpers.Error(c, http.StatusInternalServerError, err.Error())
