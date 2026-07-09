@@ -58,24 +58,8 @@ func AuthMiddleware() gin.HandlerFunc {
 		claims := token.Claims.(jwt.MapClaims)
 
 		userID, _ := claims["user_id"].(string)
-		user, ok := claims["user"].(map[string]interface{})
-		if !ok {
-			c.AbortWithStatusJSON(401, gin.H{
-				"message": "user invalid",
-			})
-			return
-		}
-
-		role, ok := user["role"].(string)
-		if !ok {
-			c.AbortWithStatusJSON(401, gin.H{
-				"message": "role invalid",
-			})
-			return
-		}
 
 		c.Set("userId", userID)
-		c.Set("role", role)
 
 		c.Next()
 	}
