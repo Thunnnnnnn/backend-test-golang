@@ -106,6 +106,8 @@ func UpdateUser(id primitive.ObjectID, user *models.User) error {
 		return err
 	}
 
+	user.ID = id
+
 	return nil
 }
 
