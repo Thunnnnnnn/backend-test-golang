@@ -10,9 +10,10 @@ import (
 )
 
 type UserResponse struct {
-	ID    string `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	Email     string `json:"email"`
+	CreatedAt string `json:"created_at"`
 }
 
 func GetAllUsers(c *gin.Context) {
@@ -22,7 +23,17 @@ func GetAllUsers(c *gin.Context) {
 		return
 	}
 
-	helpers.Success(c, http.StatusOK, users)
+	userResponses := make([]UserResponse, len(users))
+	for i, user := range users {
+		userResponses[i] = UserResponse{
+			ID:        user.ID.Hex(),
+			Name:      user.Name,
+			Email:     user.Email,
+			CreatedAt: user.CreatedAt.Format("2006-01-02 15:04:05"),
+		}
+	}
+
+	helpers.Success(c, http.StatusOK, userResponses)
 }
 
 func GetUserByID(c *gin.Context) {
@@ -39,9 +50,10 @@ func GetUserByID(c *gin.Context) {
 	}
 
 	userResponse := UserResponse{
-		ID:    user.ID.Hex(),
-		Name:  user.Name,
-		Email: user.Email,
+		ID:        user.ID.Hex(),
+		Name:      user.Name,
+		Email:     user.Email,
+		CreatedAt: user.CreatedAt.Format("2006-01-02 15:04:05"),
 	}
 
 	helpers.Success(c, http.StatusOK, userResponse)
@@ -70,9 +82,10 @@ func CreateUser(c *gin.Context) {
 	}
 
 	userResponse := UserResponse{
-		ID:    user.ID.Hex(),
-		Name:  user.Name,
-		Email: user.Email,
+		ID:        user.ID.Hex(),
+		Name:      user.Name,
+		Email:     user.Email,
+		CreatedAt: user.CreatedAt.Format("2006-01-02 15:04:05"),
 	}
 
 	helpers.Success(c, http.StatusCreated, userResponse)
@@ -101,9 +114,10 @@ func UpdateUser(c *gin.Context) {
 	}
 
 	userResponse := UserResponse{
-		ID:    user.ID.Hex(),
-		Name:  user.Name,
-		Email: user.Email,
+		ID:        user.ID.Hex(),
+		Name:      user.Name,
+		Email:     user.Email,
+		CreatedAt: user.CreatedAt.Format("2006-01-02 15:04:05"),
 	}
 
 	helpers.Success(c, http.StatusOK, userResponse)

@@ -120,6 +120,8 @@ func UpdateUser(id primitive.ObjectID, user *models.User) error {
 		user.Password = existingUser.Password
 	}
 
+	user.CreatedAt = existingUser.CreatedAt
+
 	_, err := database.UserCollection.UpdateOne(ctx, bson.M{"_id": id}, bson.M{"$set": user})
 	if err != nil {
 		return err
